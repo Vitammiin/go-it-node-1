@@ -1,32 +1,41 @@
 // "dev": "nodemon index",
 
-const contacts = require("./db/contacts");
+const argv = require("yargs").argv;
+
+const contacts = require("./contacts");
 
 const invokeAction = async ({ action, id, name, email, phone }) => {
-  switch (action) {
-    case "read":
-      const allContacts = await contacts.listContacts();
-      return console.log(allContacts);
-    case "getContactById":
-      break;
-      const oneContact = await contacts.getContactById(id);
-      return console.log(oneContact);
-      break;
-    // case "add":
-    //   const  = await contacts.addContact(name, email, phone);
-    //   console.log(addContatc);
-    //   break;
-    case "remove":
-      const removeContact = await contacts.removeContact(id, {
-        name,
-        email,
-        phone,
-      });
-      return console.log(removeContact);
+  try {
+    switch (action) {
+      case "read":
+        const allContacts = await contacts.listContacts();
+        console.log(allContacts);
+        break;
+      case "getContactById":
+        const oneContact = await contacts.getContactById(id);
+        console.table(oneContact);
+        break;
+
+      case "add":
+        const addContatc = await contacts.addContact({ name, email, phone });
+        console.log(addContatc);
+        break;
+      case "remove":
+        const removeContact = await contacts.removeContact(id);
+        console.log(removeContact);
+        break;
+      default:
+        console.warn("\x1B[31m Unknown action type!");
+    }
+  } catch (error) {
+    console.log("error");
   }
 };
 
-// invokeAction({ action: "getContactById", id: "AeHIrLTr6JkxGE6SN-0Rw" });
+invokeAction(argv);
+
+//
+// invokeAction({ action: "getContactById", id: "vza2RIzNGIwutCVCs4mCL" });
 // invokeAction({ action: "read" });
 // invokeAction({
 //   action: "add",
@@ -35,10 +44,10 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
 //   phone: "(093) 944-3732",
 // });
 
-invokeAction({
-  action: "remove",
-  id: "rsKkOQUi80UsgVPCcLZZW",
-  name: "Alec Howard",
-  email: "Donec.elementum@scelerisquescelerisquedui.net",
-  phone: "(748) 206-2688",
-});
+// invokeAction({
+//   action: "remove",
+//   id: "e6ywwRe4jcqxXfCZOj_1e",
+//   name: "Thomas Lucas",
+//   email: "nec@Nulla.com",
+//   phone: "(704) 398-7993",
+// });
